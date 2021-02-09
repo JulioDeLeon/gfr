@@ -74,7 +74,7 @@ pub(crate) mod search {
                             println!(".");
                         }
                         if !first {
-                            println!("{}", p.to_str().expect("could not convert to string").yellow());
+                            println!("{}", p.to_str().expect("could not convert to string").bright_yellow());
                             first = true;
                         }
                         found = true;
