@@ -4,6 +4,7 @@ pub(crate) mod search {
     use std::{io, fs};
     use std::io::BufRead;
     use std::fs::File;
+    use content_inspector::{ContentType, inspect};
     use colored::Colorize;
     use regex::Regex;
 
@@ -62,6 +63,9 @@ pub(crate) mod search {
             }
             match rline {
                 Ok(line) => {
+                    if inspect(line.as_bytes()) != ContentType::UTF_8 {
+                        return
+                    }
                     if search.is_match(&line) {
                         if !found && first {
                             println!(".");
