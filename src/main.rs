@@ -77,7 +77,6 @@ fn main() {
 
     if let Some(context) = matches.value_of("context") {
         let p = context.parse::<usize>().unwrap();
-        println!("This is the val of {}", p);
         input.set_context(&p);
     }
 
@@ -89,8 +88,6 @@ fn main() {
     if let Some(sdir) = matches.value_of("sourcedir") {
         input.set_source_dir(&(sdir).to_string());
     }
-
-    println!("this is the input {:?}", input);
 
     let starting_dir = Path::new(&input.sdir);
 

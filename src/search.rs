@@ -13,8 +13,6 @@ pub(crate) mod search {
             return Ok(())
         }
         // get entries
-        println!("This is a dir {}", dir.to_str().expect("could not get name").blue());
-
         for entry in fs::read_dir(dir)? {
             let entry = entry?;
             let cpath = entry.path();
@@ -59,11 +57,14 @@ pub(crate) mod search {
         let p = fs::canonicalize(file).expect("could not get absolute path of file");
 
         for rline in io::BufReader::new(&fh).lines() {
+            if opts.maxlines != 0 && ln == opts.maxlines {
+                break;
+            }
             match rline {
                 Ok(line) => {
                     if search.is_match(&line) {
                         if !found && first {
-                            println!();
+                            println!(".");
                         }
                         if !first {
                             println!("{}", p.to_str().expect("could not convert to string").yellow());
@@ -121,6 +122,22 @@ pub(crate) mod search {
     }
 
     fn print_match(ln: usize, line: &String, re: &Regex) {
-        println!("[{}]\t{}", ln, line.red());
+        println!("[{}]\t{}", ln, colorize_find(line, re));
+    }
+
+    fn colorize_find(s: &String, re: &Regex) -> String {
+        if s.is_empty() {
+            "".to_string()
+        } else {
+            match re.find(s) {
+                None => s.to_string(),
+                Some(check) => {
+                    let pre = &s[0..check.start()];
+                    let mat = &s[check.start()..check.end()];
+                    let post = &s[check.end()..].to_string();
+                    format!("{}{}{}", pre, mat.red(), colorize_find(post, re))
+                }
+            }
+        }
     }
 }
