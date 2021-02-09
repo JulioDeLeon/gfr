@@ -117,9 +117,12 @@ pub(crate) mod search {
                     ln = ln + 1;
                 },
                 Err(msg) => {
-                    println!("There was an issue with {} : {}",
-                             p.to_str().expect("could not convert to string").yellow(),
-                             msg.to_string());
+                    if opts.verbose {
+                        println!("There was an issue with {} : {}",
+                                 p.to_str().expect("could not convert to string").yellow(),
+                                 msg.to_string());
+                    }
+
                     return
                 }
             }

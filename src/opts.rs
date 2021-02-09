@@ -8,7 +8,8 @@ pub(crate) mod opts {
         pub(crate) ignore: Option<Regex>,
         pub(crate) sdir: String,
         pub(crate) context: usize,
-        pub(crate) maxlines: usize
+        pub(crate) maxlines: usize,
+        pub(crate) verbose: bool,
     }
 
     impl Opts {
@@ -19,7 +20,8 @@ pub(crate) mod opts {
                 ignore: None,
                 sdir: ".".to_string(),
                 context: 0,
-                maxlines: 0
+                maxlines: 0,
+                verbose: false,
             }
         }
 
@@ -54,6 +56,10 @@ pub(crate) mod opts {
 
         pub fn set_maxlines(&mut self, maxlines: &usize) {
             self.maxlines = maxlines.clone();
+        }
+
+        pub fn set_verbose(&mut self, v: &bool) {
+            self.verbose = v.clone();
         }
     }
 }

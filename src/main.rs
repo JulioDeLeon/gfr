@@ -36,6 +36,7 @@ fn main() {
             .short('v')
             .multiple(true)
             .about("sets the level of verbosity")
+            .takes_value(false)
             .required(false))
         .arg(Arg::new("context")
             .value_name("CONTEXT")
@@ -87,6 +88,11 @@ fn main() {
 
     if let Some(sdir) = matches.value_of("sourcedir") {
         input.set_source_dir(&(sdir).to_string());
+    }
+
+    match matches.occurrences_of("v") {
+        0 => input.set_verbose(&(false)),
+        _ => input.set_verbose(&(true)),
     }
 
     let starting_dir = Path::new(&input.sdir);
