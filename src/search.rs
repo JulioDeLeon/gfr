@@ -66,6 +66,9 @@ pub(crate) mod search {
                     if inspect(line.as_bytes()) != ContentType::UTF_8 {
                         return
                     }
+                    if inspect(line.as_bytes()) == ContentType::BINARY {
+                        return
+                    }
                     if search.is_match(&line) {
                         if !found && first {
                             println!(".");
@@ -114,7 +117,9 @@ pub(crate) mod search {
                     ln = ln + 1;
                 },
                 Err(msg) => {
-                    println!("There was an issue: {}", msg.to_string());
+                    println!("There was an issue with {} : {}",
+                             p.to_str().expect("could not convert to string").yellow(),
+                             msg.to_string());
                     return
                 }
             }
